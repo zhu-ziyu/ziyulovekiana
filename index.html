@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>给你的温柔泡泡</title>
+    <link rel="preload" as="audio" href="index.mp3">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="bg-soft"></div>
+<div id="stage" aria-live="polite">
+    <div id="bubble-layer" tabindex="-1" aria-label="温馨泡泡"></div>
+    <button id="cta" type="button" aria-label="点我一下">点我一下</button>
+    <div id="final" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="card">
+            <h1>代码只有 <strong>932</strong> 行，<br>我对你的思念不止于此。</h1>
+            <p>—— 送给你的小小网站</p>
+        </div>
+    </div>
+</div>
+
+
+<div id="toast">若未自动播放，请点任意泡泡开始音乐</div>
+
+
+<audio id="bgm" src="index.mp3" preload="auto" loop playsinline></audio>
+<script src="app.js"></script>
+</body>
+</html>
