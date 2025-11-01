@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>给你的温柔泡泡</title>
-    <link rel="preload" as="audio" href="index.mp3">
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>我ziyu真的不会cs呀！！！！！！！！</title>
+    <link rel="preload" href="index.mp3" as="audio">
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div id="bg-soft"></div>
-<div id="stage" aria-live="polite">
-    <div id="bubble-layer" tabindex="-1" aria-label="温馨泡泡"></div>
-    <button id="cta" type="button" aria-label="点我一下">点我一下</button>
-    <div id="final" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="card">
-            <h1>代码只有 <strong>932</strong> 行，<br>我对你的思念不止于此。</h1>
-            <p>—— 送给你的小小网站</p>
-        </div>
-    </div>
+<!-- 背景装饰（柔光彩色气泡，非 canvas） -->
+<div class="bg-orbs" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
 </div>
 
+<!-- 背景音乐：自动播放（先静音，JS 内淡入恢复音量） -->
+<audio id="bgm" src="index.mp3" autoplay loop playsinline muted preload="auto"></audio>
 
-<div id="toast">若未自动播放，请点任意泡泡开始音乐</div>
+<!-- 主场景：99 个泡泡小方块会被注入到这里 -->
+<main id="field" class="field" aria-live="polite"></main>
 
+<!-- 全部点击后出现的泡泡按钮 -->
+<button id="finalBubble" class="glass-btn final hidden">点我</button>
 
-<audio id="bgm" src="index.mp3" preload="auto" loop playsinline></audio>
+<!-- 最终文案 -->
+<div id="finalMessage" class="final-text hidden">
+    代码只有 <strong>134+332+800</strong> 行，<br/>我对你的思念不止于此 ❤（如果你有windows我的思念还有更多）
+</div>
+
+<!-- 轻微提示 -->
+<div class="tip">ZIYU MADE OF KIANA✨</div>
+
 <script src="app.js"></script>
 </body>
 </html>
+

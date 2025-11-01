@@ -1,87 +1,142 @@
 :root{
-    --bg:#f6f8ff;
-    --ink:#1f1f1f;
-    --glass:white;
-    --ctaA:#7b5cff; --ctaB:#00c2ff;
+    --bg1:#ffecd2;
+    --bg2:#fcb69f;
+    --glass1:rgba(255,255,255,.35);
+    --glass2:rgba(255,255,255,.15);
+    --shadow:0 10px 30px rgba(0,0,0,.12);
+    --radius:18px;               /* 更圆润一点 */
+    --blur:14px;
+    --floatC:20s;
+    --font:'PingFang SC','SF Pro Display','HarmonyOS Sans','Microsoft YaHei',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
+
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0; overflow:hidden; font-family: system-ui, -apple-system, Segoe UI, Roboto, PingFang SC, Noto Sans SC, Arial, "Microsoft YaHei", sans-serif; color:var(--ink); background: var(--bg);}
-
-
-/* dreamy background */
-#bg-soft{ position:fixed; inset:-20%; z-index:-1; filter: blur(60px) saturate(1.1);
+body{
+    margin:0;
+    font-family:var(--font);
     background:
-            radial-gradient(40% 35% at 20% 30%, #ffd1e6 0 50%, #0000 60%),
-            radial-gradient(38% 32% at 80% 25%, #d8e7ff 0 50%, #0000 60%),
-            radial-gradient(50% 45% at 30% 80%, #d2ffe2 0 45%, #0000 60%),
-            radial-gradient(46% 45% at 75% 75%, #fff1c9 0 40%, #0000 60%),
-            linear-gradient(120deg,#fbfeff,#f4f6ff);
-    animation: bgFloat 18s ease-in-out infinite alternate;
+            radial-gradient(1200px 700px at 20% 10%, #fff5f1 0%, transparent 60%),
+            radial-gradient(1000px 800px at 80% 90%, #e8f5ff 0%, transparent 60%),
+            linear-gradient(135deg, var(--bg1), var(--bg2));
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
 }
-@keyframes bgFloat{ to{ transform: translateY(-4%) translateX(2%); } }
 
+.field{ position:fixed; inset:0; display:block; overflow:hidden; }
 
-/* stage */
-#stage{ position:fixed; inset:0; padding:24px; display:flex; align-items:center; justify-content:center; }
-#bubble-layer{ position:absolute; inset:0; }
-
-
-/* glassy rainbow bubbles */
-.bubble{ position:absolute; min-width:120px; max-width:240px; padding:12px 16px; border-radius:18px; font-weight:700; font-size:14px; line-height:1.2; letter-spacing:.2px; user-select:none; cursor:pointer;
-    color:#1b1b1b; text-align:center;
-    background: linear-gradient(135deg, #ffffffcc, #ffffff88);
-    border:1px solid #ffffffaa;
-    box-shadow: 0 10px 26px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.8);
-    backdrop-filter: blur(8px) saturate(1.2);
-    -webkit-backdrop-filter: blur(8px) saturate(1.2);
-    transition: transform .25s ease, opacity .25s ease, filter .25s ease;
-    outline:none;
+.tip{
+    position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+    padding:8px 14px; font-size:12px; letter-spacing:.2px; color:#3b3b3b;
+    background:linear-gradient(135deg,var(--glass1),var(--glass2));
+    border:1px solid rgba(255,255,255,.35);
+    backdrop-filter: blur(calc(var(--blur) * .6));
+    -webkit-backdrop-filter: blur(calc(var(--blur) * .6));
+    border-radius:999px; box-shadow:var(--shadow); z-index:2;
 }
-/* colorful halo using gradient border & glow */
-.bubble::before{ content:""; position:absolute; inset:-2px; border-radius:20px; z-index:-1;
-    background: conic-gradient(from 90deg, var(--c1), var(--c2), var(--c3), var(--c1));
-    filter: blur(10px) saturate(1.4);
+
+/* 背景彩色气泡（仅装饰） */
+.bg-orbs{position:fixed; inset:-20vmax; filter:blur(60px); pointer-events:none; z-index:0}
+.bg-orbs span{
+    position:absolute; width:35vmin; height:35vmin; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.1));
+    mix-blend-mode:screen; opacity:.6; animation:drift var(--floatC) ease-in-out infinite alternate;
 }
-/* inner glossy shine */
-.bubble::after{ content:""; position:absolute; left:12px; right:12px; top:6px; height:34%; border-radius:14px; background: linear-gradient(180deg, #fff8, #fff0); mix-blend-mode:screen; pointer-events:none; }
-.bubble:hover{ transform: translateZ(0) scale(1.06); filter: brightness(1.05); }
+.bg-orbs span:nth-child(1){top:10%; left:15%; background:radial-gradient(circle at 30% 30%, #ffd1dc, #ff8fb3); animation-duration:18s}
+.bg-orbs span:nth-child(2){top:60%; left:10%; background:radial-gradient(circle at 30% 30%, #b5e7ff, #8ec5ff); animation-duration:22s}
+.bg-orbs span:nth-child(3){top:30%; left:70%; background:radial-gradient(circle at 30% 30%, #d9ffd6, #8ef0b2); animation-duration:20s}
+.bg-orbs span:nth-child(4){top:75%; left:65%; background:radial-gradient(circle at 30% 30%, #fff3b0, #ffd27a); animation-duration:24s}
+.bg-orbs span:nth-child(5){top:5%;  left:80%; background:radial-gradient(circle at 30% 30%, #d2c0ff, #9aa7ff); animation-duration:26s}
+.bg-orbs span:nth-child(n+6){width:22vmin; height:22vmin; opacity:.45}
+@keyframes drift{from{transform:translate(-4vmin,-3vmin)} to{transform:translate(4vmin,3vmin)}}
 
+/* 泡泡小方块：更大一点（更好读） */
+.bubble{
+    will-change: transform;
+    position:absolute; z-index:2; left:50%; top:50%;
+    transform: translate(-50%, -50%) translateZ(0); /* 初始都在中心 */
+    opacity:0;
 
-/* floating micro-animations */
-@keyframes bob { 0%{ transform: translate(var(--tx,0), var(--ty,0)) scale(1) } 50%{ transform: translate(calc(var(--tx,0) + 2px), calc(var(--ty,0) - 4px)) scale(1.015) } 100%{ transform: translate(var(--tx,0), var(--ty,0)) scale(1) } }
-.bubble{ animation: bob calc(3s + var(--rnd)*2s) ease-in-out infinite; }
+    padding:12px 16px;           /* 比之前略大 */
+    max-width:300px;             /* 由 240 提升到 300 */
+    color:#1f1f1f; font-size:15px; line-height:1.28; font-weight:600;
+    border-radius: var(--radius);
+    background:
+            radial-gradient(120% 110% at 20% 10%, rgba(255,255,255,.95), rgba(255,255,255,.25) 60%),
+            linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.12));
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow: 0 6px 18px rgba(0,0,0,.12), inset 0 0 20px rgba(255,255,255,.25);
+    backdrop-filter: blur(var(--blur)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+    cursor:pointer;
 
+    /* 从中心到目标位的过渡 */
+    transition: transform 900ms cubic-bezier(.18,.8,.2,1), opacity 1100ms ease;
+}
+.bubble::after{
+    content:""; position:absolute; right:10px; top:-6px; width:42px; height:18px; border-radius:999px;
+    background: radial-gradient(70% 100% at 50% 50%, rgba(255,255,255,.8), rgba(255,255,255,0));
+    filter: blur(2px); opacity:.9;
+}
+/* 散开到目标位并显现（目标位由 --tx/--ty 控制） */
+.bubble.scatter{
+    opacity:1;
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)));
+}
 
-/* pop animation */
-@keyframes pop { 0%{ transform: translate(var(--tx), var(--ty)) scale(1); opacity:1; } 70%{ transform: translate(var(--tx), var(--ty)) scale(1.35) rotate(3deg); opacity:.6; } 100%{ transform: translate(var(--tx), var(--ty)) scale(.2) rotate(-18deg); opacity:0; } }
-.popping{ animation: pop .42s cubic-bezier(.2,.8,.2,1) forwards !important; filter: saturate(1.3) blur(.5px); }
+/* 点击快速消失 */
+.bubble.vanish{ animation: vanish .22s cubic-bezier(.2,.7,.2,1) forwards; filter: blur(2px) saturate(140%); }
+@keyframes vanish{
+    from{ opacity:1; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) }
+    to  { opacity:0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(.1) rotate(8deg) }
+}
 
+/* 玻璃按钮（最终按钮） */
+.glass-btn{
+    position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
+    padding:14px 26px; font-size:16px; font-weight:700; letter-spacing:.4px;
+    color:#1e1e1e; border:none; cursor:pointer;
+    background:linear-gradient(135deg, var(--glass1),var(--glass2));
+    border:1px solid rgba(255,255,255,.55);
+    backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur));
+    border-radius:28px; box-shadow:var(--shadow); transition:transform .2s ease, opacity .25s ease; z-index:3;
+}
+.glass-btn:hover{ transform:translate(-50%,-50%) scale(1.05) }
+.glass-btn:active{ transform:translate(-50%,-50%) scale(.97) }
+.glass-btn.hidden{ opacity:0; pointer-events:none }
+.glass-btn.final{ padding:18px 38px; font-size:18px; animation: gentle 2.2s ease-in-out infinite alternate; }
+@keyframes gentle{ from{transform:translate(-50%,-50%) scale(1)} to{transform:translate(-50%,-50%) scale(1.06)} }
 
-/* pop ring & sparkles */
-.ring{ position:absolute; border-radius:999px; pointer-events:none; box-shadow: 0 0 0 2px #fff8 inset, 0 0 24px #fff6; opacity:.9; }
-.ring.anim{ animation: ring .45s ease-out forwards; }
-@keyframes ring{ from{ transform: translate(-50%,-50%) scale(.4); opacity:1 } to{ transform: translate(-50%,-50%) scale(1.7); opacity:0 } }
-.spark{ position:absolute; width:6px; height:6px; border-radius:50%; background: radial-gradient(#fff, #fff0); pointer-events:none; animation: spark .6s ease-out forwards; }
-@keyframes spark{ to{ transform: translate(var(--sx), var(--sy)) scale(0.2); opacity:0 } }
+/* 最终文案 */
+.final-text{
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    text-align:center; color:#1d1d1f; font-size:30px; font-weight:800; line-height:1.5;
+    opacity:0; z-index:4; flex-direction:column; gap:10px; text-shadow: 0 6px 20px rgba(0,0,0,.12);
+}
+.final-text strong{ font-size:40px }
+.final-text.show{ animation: fadeIn .9s ease forwards }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
 
+/* 纸屑/小爱心粒子（DOM 实现） */
+.particle{
+    position:absolute; width:10px; height:10px; transform:translate(-50%,-50%);
+    pointer-events:none; z-index:5; opacity:0; animation: fly 900ms ease-out forwards;
+}
+.particle.heart{ background: transparent; }
+.particle.heart::before,
+.particle.heart::after{
+    content:""; position:absolute; width:10px; height:10px; background: currentColor; border-radius:50%;
+    left:50%; top:50%; transform: translate(-50%,-50%);
+}
+.particle.heart::after{ transform: translate(calc(-50% + 5px), -50%) }
+.particle.heart::before{ transform: translate(-50%, calc(-50% + 5px)) }
+.particle.square{ background: currentColor; border-radius:3px }
+@keyframes fly{
+    0%{ opacity:0; transform: translate(-50%,-50%) scale(.6) }
+    20%{ opacity:1 }
+    100%{ opacity:0; transform: translate(var(--dx), var(--dy)) rotate(180deg) scale(0.2) }
+}
 
-/* CTA button */
-#cta{ position:absolute; inset:auto auto 48px 50%; transform:translateX(-50%); display:none; padding:14px 22px; border-radius:999px; font-size:16px; font-weight:800; color:#fff; cursor:pointer; border:0; outline:none;
-    background: linear-gradient(135deg,var(--ctaA),var(--ctaB)); box-shadow: 0 16px 32px rgba(0,0,0,.18); }
-#cta.show{ display:inline-flex; align-items:center; gap:10px; animation: pulse 1.4s ease-in-out infinite; }
-@keyframes pulse{ 0%,100%{ filter: drop-shadow(0 12px 28px rgba(123,92,255,.45)); } 50%{ filter: drop-shadow(0 8px 18px rgba(0,0,0,.18)); } }
-#cta:active{ transform:translateX(-50%) scale(.98); }
-
-
-/* Final dialog */
-#final{ position:absolute; inset:0; display:grid; place-items:center; padding:32px; text-align:center; opacity:0; pointer-events:none; transition:opacity .6s ease; }
-#final.show{ opacity:1; }
-#final .card{ background: linear-gradient(180deg,#ffffffcc,#ffffffaa); border:1px solid #fff; border-radius:24px; padding:28px 30px; backdrop-filter: blur(10px); box-shadow: 0 16px 40px rgba(0,0,0,.16); }
-#final h1{ margin:0 0 10px; font-size: clamp(22px, 5vw, 46px); }
-#final strong{ color:var(--ctaA) }
-#final p{ margin:0; color:#444; font-size: clamp(14px, 3vw, 18px); }
-
-
-/* toast */
-#toast{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%); background:#000a; color:#fff; padding:8px 12px; border-radius:999px; font-size:12px; display:none; }
+/* 实用类 */
+.hidden{ display:none }
